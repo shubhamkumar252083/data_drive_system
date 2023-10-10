@@ -1,0 +1,58 @@
+{% extends 'base.html' %} 
+{% block title %} Data Drive System {% endblock title %}
+
+{% block body %}
+    <h1>{{ folder.foldername }}</h1>
+    
+    <!-- Display subfolders -->
+    <h2>Subfolders:</h2>
+    <ul>
+        {% for subfolder in subfolders %}
+            <li>
+                <a href="{% url 'folder_detail' subfolder.id %}">{{ subfolder.foldername }}</a>
+                <form method="post" action="{% url 'folder_delete' subfolder.id %}">
+                    {% csrf_token %}
+                    <input type="submit" name="delete_folder" value="Delete">
+                </form>
+            </li>
+        {% empty %}
+            <li>No subfolders</li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Display files -->
+    <h2>Files:</h2>
+    <ul>
+        {% for file in files %}
+            <li>
+                <div class="file-info">
+                    <span><a href="{% url 'file_detail' file.id %}">{{ file.filetitle }}</a></span>
+                    <form method="post" action="{% url 'file_detail' file.id %}">
+                        {% csrf_token %}
+                        <input type="submit" name="delete_file" value="Delete" class="delete-button">
+                    </form>
+                    <!-- Add a Download link -->
+                    <a href="{% url 'file_download' file.id %}" class="btn btn-success">Download</a>
+                </div>
+            </li>
+        {% empty %}
+            <li>No files</li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Add a folder creation form -->
+    <h2>Create Folder:</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="foldername" placeholder="Folder Name">
+        <input type="submit" value="Create Folder">
+    </form>
+    
+    <!-- Add a file upload form -->
+    <h2>Upload File:</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+{% endblock body %}

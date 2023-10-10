@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% block body %}
+<div style="display: flex; justify-content: space-between; padding: 5px 10px">
+  <div class="">
+    <div class="container py-3">
+      <div class="row">
+        <h2>Files:</h2>
+        {% for file in files %}
+        <div class="col-sm">
+          <div class="card" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title">{{file.filetitle}}</h5>
+              <a href="{% url 'file_download' file.id %}" download="{{file.file}}" class="btn btn-outline-primary">Download File </a>
+              <form method="post" action="{% url 'file_detail' file.id %}">
+                {% csrf_token %}
+                <input type="submit" name="delete_file" value="Delete" class="delete-button">
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="container py-3">
+      <div class="row">
+        <h2>Subfolders:</h2><br>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="foldername" placeholder="Enter Name">
+            <input type="submit" value="Create Folder">
+        </form>
+        {% for subfolder in subfolders %}
+        <div class="col-sm">
+          <div class="card" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title">{{subfolder.foldername}}</h5>
+              <a href="{% url 'folder_detail' subfolder.id %}" class="btn btn-outline-primary"
+                >Go Folder
+              </a>
+              <form method="post" action="{% url 'folder_delete' subfolder.id %}">
+                {% csrf_token %}
+                <input type="submit" name="delete_folder" value="Delete">
+            </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!--  -->
+      </div>
+    </div>
+  </div>
+  <div class="">
+    <!-- Button trigger modal -->
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Upload File
+    </button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="file" name="file">
+              <input type="submit" value="Upload">
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

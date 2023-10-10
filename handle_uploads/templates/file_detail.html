@@ -1,0 +1,8 @@
+{% extends 'base.html' %} 
+{% block title %} Data Drive System {% endblock title %}
+
+{% block body %}
+
+    <h1>{{ file.filetitle }}</h1>
+    <a href="{% url 'file_download' file.id %}" class="btn btn-primary">Download</a>
+{% endblock body %}
