@@ -7,6 +7,8 @@
 __pycache__
 MediaFiles
 venv
+request_logs
+response_logs
 
 # Visual Studio Code # 
 .vscode
